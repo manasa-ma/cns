@@ -1,33 +1,26 @@
 import java.util.*;
 
 class CaesarCipher {
-    static String encrypt(String text, int key) {
-        text = text.toUpperCase();
-        StringBuilder result = new StringBuilder();
-        key %= 26;
-        for (char c : text.toCharArray()) {
-            if (c >= 'A' && c <= 'Z')
-                result.append((char) ('A' + (c - 'A' + key) % 26));
-            else
-                result.append(c);
-        }
-        return result.toString();
-    }
-
-    static String decrypt(String text, int key) {
-        return encrypt(text, 26 - key);
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter text: ");
+
+        System.out.print("Text: ");
         String text = sc.nextLine();
-        System.out.print("Enter key: ");
+
+        System.out.print("Key: ");
         int key = sc.nextInt();
 
-        String enc = encrypt(text, key);
+        // Encrypt
+        String enc = "";
+        for (char c : text.toCharArray())
+            enc += (char)(c + key);
+
+        // Decrypt
+        String dec = "";
+        for (char c : enc.toCharArray())
+            dec += (char)(c - key);
+
         System.out.println("Encrypted: " + enc);
-        System.out.println("Decrypted: " + decrypt(enc, key));
+        System.out.println("Decrypted: " + dec);
     }
 }
-

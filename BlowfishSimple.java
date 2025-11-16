@@ -1,19 +1,25 @@
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import java.util.Base64;
+import java.util.*;
 
-public class BlowfishSimple {
-    public static void main(String[] args) throws Exception {
-        String text = "HelloWorld";
-        SecretKey key = KeyGenerator.getInstance("Blowfish").generateKey();
-        Cipher cipher = Cipher.getInstance("Blowfish");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        String encrypted = Base64.getEncoder().encodeToString(cipher.doFinal(text.getBytes()));
-        System.out.println("Encrypted: " + encrypted);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        String decrypted = new String(cipher.doFinal(Base64.getDecoder().decode(encrypted)));
-        System.out.println("Decrypted: " + decrypted);
+class BlowfishSimple  {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter plaintext: ");
+        String text = sc.nextLine();
+
+        System.out.print("Enter key: ");
+        String key = sc.nextLine();
+
+        char[] enc = new char[text.length()];
+        char[] dec = new char[text.length()];
+
+        for(int i=0; i<text.length(); i++){
+            enc[i] = (char)(((text.charAt(i) ^ key.charAt(i % key.length())) % 94) + 33); // printable ASCII 33-126
+            dec[i] = (char)(((enc[i] - 33) ^ key.charAt(i % key.length())));             // reverse
+        }
+
+        System.out.println("Plaintext : " + text);
+        System.out.println("Encrypted : " + new String(enc));
+        System.out.println("Decrypted : " + new String(dec));
     }
 }
-
